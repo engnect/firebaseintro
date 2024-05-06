@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +29,23 @@ class _AuthState extends State<Auth> {
   void _register() async {
     UserCredential userCredential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: _email, password: _password);
+    if (userCredential.user != null) {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      await db.collection("users").doc(userCredential.user!.uid).set({
+        'firstName': _firstName,
+        'lastName': _lastName,
+        'email': _email,
+        'registerDate': DateTime.now()
+      });
+    }
   }
 
   bool _registerPage = true;
   final _formKey = GlobalKey<FormState>();
   String _email = "";
   String _password = "";
+  String _firstName = "";
+  String _lastName = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +78,27 @@ class _AuthState extends State<Auth> {
                             _password = newValue!;
                           },
                         ),
+                        if (_registerPage)
+                          Column(
+                            children: [
+                              TextFormField(
+                                decoration:
+                                    const InputDecoration(labelText: "İsim"),
+                                autocorrect: false,
+                                onSaved: (newValue) {
+                                  _firstName = newValue!;
+                                },
+                              ),
+                              TextFormField(
+                                decoration:
+                                    const InputDecoration(labelText: "Soyisim"),
+                                autocorrect: false,
+                                onSaved: (newValue) {
+                                  _lastName = newValue!;
+                                },
+                              ),
+                            ],
+                          ),
                         ElevatedButton(
                             onPressed: () {
                               _formKey.currentState!.save();
