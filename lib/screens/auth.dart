@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class Auth extends StatefulWidget {
-  const Auth({Key? key}) : super(key: key);
+  const Auth({super.key});
 
   @override
-  _AuthState createState() => _AuthState();
+  State<Auth> createState() => _AuthState();
 }
 
 class _AuthState extends State<Auth> {
@@ -35,7 +35,7 @@ class _AuthState extends State<Auth> {
         'firstName': _firstName,
         'lastName': _lastName,
         'email': _email,
-        'registerDate': DateTime.now()
+        'registerDate': DateTime.now(),
       });
     }
   }

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class UserModel {
@@ -5,39 +6,33 @@ class UserModel {
   String? firstName;
   String? lastName;
   String? email;
+  String? avatarUrl;
 
-  UserModel({this.id, this.firstName, this.lastName, this.email});
+  UserModel(
+      {this.id, this.firstName, this.lastName, this.email, this.avatarUrl});
 
   Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-
-    if (id != null) {
-      result.addAll({'id': id});
-    }
-    if (firstName != null) {
-      result.addAll({'firstName': firstName});
-    }
-    if (lastName != null) {
-      result.addAll({'lastName': lastName});
-    }
-    if (email != null) {
-      result.addAll({'email': email});
-    }
-
-    return result;
+    return <String, dynamic>{
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'avatarUrl': avatarUrl,
+    };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id'],
-      firstName: map['firstName'],
-      lastName: map['lastName'],
-      email: map['email'],
+      id: map['id'] != null ? map['id'] as String : null,
+      firstName: map['firstName'] != null ? map['firstName'] as String : null,
+      lastName: map['lastName'] != null ? map['lastName'] as String : null,
+      email: map['email'] != null ? map['email'] as String : null,
+      avatarUrl: map['avatarUrl'] != null ? map['avatarUrl'] as String : null,
     );
   }
 
   String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source));
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
